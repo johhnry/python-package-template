@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "python-package-template"
+version = "0.1.0"
+description = "Python package template with modern tooling"
+authors = ["Joseph Henry <josephenry@protonmail.com>"]
+readme = "README.md"
+packages = [{include = "python_package_template", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+mypy = "^1.0.1"
+ruff = "^0.0.254"
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+poethepoet = "^0.18.1"
+isort = "^5.12.0"
+pre-commit = "^3.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+test = { cmd = "pytest --cov=python_package_template --cov-fail-under=90", help = "Run tests with code coverage" }
+format-check = { cmd = "black . --check", help = "Check code style" }
+lint-check = { cmd = "ruff check .", help = "Lint code" }
+type-check = { cmd = "mypy .", help = "Static type checking" }
+imports-check = { cmd = "isort . --check-only", help = "Check import order"}
+check-all = ["type-check", "lint-check", "format-check", "imports-check", "test"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
